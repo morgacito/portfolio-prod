@@ -37,7 +37,10 @@ $inputData = json_decode(file_get_contents("php://input"), true);
 
 $name = trim($inputData['name'] ?? '');
 $email = trim($inputData['email'] ?? '');
-$subject = trim($inputData['subject'] ?? 'Consulta por Proyecto / Consultoría');
+$subject = trim($inputData['subject'] ?? '');
+if (empty($subject)) {
+    $subject = 'Mensaje enviado a tu Portfolio';
+}
 $message = trim($inputData['message'] ?? '');
 
 // Validación básica de campos
@@ -102,7 +105,7 @@ try {
 
     // Contenido
     $mail->isHTML(true);
-    $mail->Subject = 'Nuevo Lead: ' . $subject;
+    $mail->Subject = $subject . ($name ? ' - ' . $name : '');
     
     // Cuerpo en formato HTML
     $mail->Body    = "
